@@ -1,4 +1,5 @@
-﻿using SalesDemo.Customers;
+﻿using SalesDemo.Orders;
+using SalesDemo.Customers;
 using SalesDemo.Products;
 using Abp.Zero.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -21,6 +22,8 @@ namespace SalesDemo.EntityFrameworkCore
 {
     public class SalesDemoDbContext : AbpZeroDbContext<Tenant, Role, User, SalesDemoDbContext>, IOpenIddictDbContext
     {
+        public virtual DbSet<Order> Orders { get; set; }
+
         public virtual DbSet<Customer> Customers { get; set; }
 
         public virtual DbSet<Product> Products { get; set; }
@@ -63,10 +66,14 @@ namespace SalesDemo.EntityFrameworkCore
         {
             base.OnModelCreating(modelBuilder);
 
-            modelBuilder.Entity<Customer>(c =>
+            modelBuilder.Entity<Order>(o =>
             {
-                c.HasIndex(e => new { e.TenantId });
+                o.HasIndex(e => new { e.TenantId });
             });
+            modelBuilder.Entity<Customer>(c =>
+                       {
+                           c.HasIndex(e => new { e.TenantId });
+                       });
             modelBuilder.Entity<Product>(p =>
                        {
                            p.HasIndex(e => new { e.TenantId });

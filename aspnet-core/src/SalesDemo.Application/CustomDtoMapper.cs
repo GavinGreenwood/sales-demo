@@ -1,4 +1,6 @@
-﻿using SalesDemo.Customers.Dtos;
+﻿using SalesDemo.Orders.Dtos;
+using SalesDemo.Orders;
+using SalesDemo.Customers.Dtos;
 using SalesDemo.Customers;
 using SalesDemo.Products.Dtos;
 using SalesDemo.Products;
@@ -53,6 +55,8 @@ namespace SalesDemo
     {
         public static void CreateMappings(IMapperConfigurationExpression configuration)
         {
+            configuration.CreateMap<CreateOrEditOrderDto, Order>().ReverseMap();
+            configuration.CreateMap<OrderDto, Order>().ReverseMap();
             configuration.CreateMap<CreateOrEditCustomerDto, Customer>().ReverseMap();
             configuration.CreateMap<CustomerDto, Customer>().ReverseMap();
             configuration.CreateMap<CreateOrEditProductDto, Product>().ReverseMap();

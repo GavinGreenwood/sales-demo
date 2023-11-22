@@ -30,6 +30,11 @@ namespace SalesDemo.Authorization
 
             var pages = context.GetPermissionOrNull(AppPermissions.Pages) ?? context.CreatePermission(AppPermissions.Pages, L("Pages"));
 
+            var orders = pages.CreateChildPermission(AppPermissions.Pages_Orders, L("Orders"), multiTenancySides: MultiTenancySides.Tenant);
+            orders.CreateChildPermission(AppPermissions.Pages_Orders_Create, L("CreateNewOrder"), multiTenancySides: MultiTenancySides.Tenant);
+            orders.CreateChildPermission(AppPermissions.Pages_Orders_Edit, L("EditOrder"), multiTenancySides: MultiTenancySides.Tenant);
+            orders.CreateChildPermission(AppPermissions.Pages_Orders_Delete, L("DeleteOrder"), multiTenancySides: MultiTenancySides.Tenant);
+
             var customers = pages.CreateChildPermission(AppPermissions.Pages_Customers, L("Customers"), multiTenancySides: MultiTenancySides.Tenant);
             customers.CreateChildPermission(AppPermissions.Pages_Customers_Create, L("CreateNewCustomer"), multiTenancySides: MultiTenancySides.Tenant);
             customers.CreateChildPermission(AppPermissions.Pages_Customers_Edit, L("EditCustomer"), multiTenancySides: MultiTenancySides.Tenant);
