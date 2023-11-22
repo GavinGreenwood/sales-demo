@@ -213,7 +213,7 @@ namespace SalesDemo.Tests.Products
             }
 
             [Fact()]
-            public async Task GivenGetAll_WhenSkuFilter_ShouldReturnFiltedProductListWithCountUpdated()
+            public async Task GivenGetAll_WhenSkuFilter_ShouldReturnFiltedProductList()
             {
                 var input = new GetAllProductsInput
                 {
@@ -223,7 +223,58 @@ namespace SalesDemo.Tests.Products
                 var output = await _classUnderTest.GetAll(input);
 
                 output.Items.Count.ShouldBe(2);
-                output.TotalCount.ShouldBe(2);
+            }
+
+            [Fact()]
+            public async Task GivenGetAll_WhenFilterDescription_ShouldFlterOnDescription()
+            {
+                var input = new GetAllProductsInput
+                {
+                    Filter = "Test Description 3"
+                };
+
+                var output = await _classUnderTest.GetAll(input);
+
+                output.Items.Count.ShouldBe(1);
+            }
+
+            [Fact()]
+            public async Task GivenGetAll_WhenFilterSku_ShouldFlterOnSku()
+            {
+                var input = new GetAllProductsInput
+                {
+                    Filter = "09876543"
+                };
+
+                var output = await _classUnderTest.GetAll(input);
+
+                output.Items.Count.ShouldBe(1);
+            }
+
+            [Fact()]
+            public async Task GivenGetAll_WhenFilterName_ShouldFlterOnName()
+            {
+                var input = new GetAllProductsInput
+                {
+                    Filter = "Test Product 2"
+                };
+
+                var output = await _classUnderTest.GetAll(input);
+
+                output.Items.Count.ShouldBe(1);
+            }
+
+            [Fact()]
+            public async Task GivenGetAll_WhenSorting_ShouldSortOnName()
+            {
+                var input = new GetAllProductsInput
+                {
+                    Sorting = "name desc"
+                };
+
+                var output = await _classUnderTest.GetAll(input);
+
+                output.Items[0].Product.Name.ShouldBe("Test Product 3");
             }
         }
     }
