@@ -143,7 +143,7 @@ namespace SalesDemo.Tests.Products
             {
                 UsingDbContext(context => context.Products.Add(new Product
                 {
-                    Name = "Test Product",
+                    Name = "Laptop",
                     Description = "Test Description",
                     Sku = "12345678",
                     Id = 1
@@ -197,6 +197,20 @@ namespace SalesDemo.Tests.Products
 
                 output.Items.Count.ShouldBe(2);
             }
+
+            [Fact()]
+            public async Task GivenGetAll_WhenNameFilter_ShouldReturnFiltedProductListWithCountUpdated()
+            {
+                var input = new GetAllProductsInput
+                {
+                    NameFilter = "top"
+                };
+
+                var output = await _classUnderTest.GetAll(input);
+
+                output.Items.Count.ShouldBe(1);
+                output.TotalCount.ShouldBe(1);
+            }   
         }
     }
 

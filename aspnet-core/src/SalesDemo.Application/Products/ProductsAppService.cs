@@ -30,13 +30,14 @@ namespace SalesDemo.Products
 
         public virtual async Task<PagedResultDto<GetProductForViewDto>> GetAll(GetAllProductsInput input)
         {
-            var productsFromDb = _productRepository.GetAll();
+            var filteredProducts = _productRepository.GetAll()
+                        .WhereIf(!string.IsNullOrWhiteSpace(input.NameFilter), e => e.Name.Contains(input.NameFilter));
 
-            var pagedProducts = productsFromDb
+            var pagedAndFilteredProducts = filteredProducts
                 .OrderBy(input.Sorting ?? "id asc")
                 .PageBy(input);
 
-            var products = from o in pagedProducts
+            var products = from o in pagedAndFilteredProducts
                            select new
                             {
 
@@ -46,7 +47,7 @@ namespace SalesDemo.Products
                                 Id = o.Id
                             };
 
-            var totalCount = await _productRepository.GetAll().CountAsync();
+            var totalCount = await filteredProducts.CountAsync();
 
             var dbList = await products.ToListAsync();
             var results = new List<GetProductForViewDto>();
