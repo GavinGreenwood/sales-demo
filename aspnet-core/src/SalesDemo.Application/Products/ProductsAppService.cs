@@ -43,9 +43,7 @@ namespace SalesDemo.Products
         [AbpAuthorize(AppPermissions.Pages_Products_Create)]
         protected virtual async Task Create(CreateOrEditProductDto input)
         {
-            var product = ObjectMapper.Map<Product>(input);
-
-            await _productRepository.InsertAsync(product);
+            throw new NotImplementedException();
         }
     }
 }
