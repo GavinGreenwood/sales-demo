@@ -28,6 +28,25 @@ namespace SalesDemo.Products
 
         }
 
+        public virtual async Task<GetProductForViewDto> GetProductForView(int id)
+        {
+            var product = await _productRepository.GetAsync(id);
+
+            var output = new GetProductForViewDto { Product = ObjectMapper.Map<ProductDto>(product) };
+
+            return output;
+        }
+
+        [AbpAuthorize(AppPermissions.Pages_Products_Edit)]
+        public virtual async Task<GetProductForEditOutput> GetProductForEdit(EntityDto input)
+        {
+            var product = await _productRepository.FirstOrDefaultAsync(input.Id);
+
+            var output = new GetProductForEditOutput { Product = ObjectMapper.Map<CreateOrEditProductDto>(product) };
+
+            return output;
+        }
+
         public virtual async Task CreateOrEdit(CreateOrEditProductDto input)
         {
             if (input.Id == null)
