@@ -173,6 +173,16 @@ namespace SalesDemo.Tests.Products
 
                 output.TotalCount.ShouldBe(3);
             }
+
+            [Fact()]
+            public async Task GivenGetAll_ShouldReturnProductList()
+            {
+                var input = new GetAllProductsInput();
+
+                var output = await _classUnderTest.GetAll(input);
+
+                output.Items.Count.ShouldBe(3);
+            }
         }
     }
 

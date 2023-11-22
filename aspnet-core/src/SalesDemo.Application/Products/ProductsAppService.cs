@@ -30,11 +30,43 @@ namespace SalesDemo.Products
 
         public virtual async Task<PagedResultDto<GetProductForViewDto>> GetAll(GetAllProductsInput input)
         {
+            var productsFromDb = _productRepository.GetAll();
+
+            var products = from o in productsFromDb
+                           select new
+                            {
+
+                                o.Name,
+                                o.Description,
+                                o.Sku,
+                                Id = o.Id
+                            };
+
             var totalCount = await _productRepository.GetAll().CountAsync();
+
+            var dbList = await products.ToListAsync();
+            var results = new List<GetProductForViewDto>();
+
+            foreach (var o in dbList)
+            {
+                var res = new GetProductForViewDto()
+                {
+                    Product = new ProductDto
+                    {
+
+                        Name = o.Name,
+                        Description = o.Description,
+                        Sku = o.Sku,
+                        Id = o.Id,
+                    }
+                };
+
+                results.Add(res);
+            }
 
             return new PagedResultDto<GetProductForViewDto>(
                 totalCount,
-                null
+                results
             );
         }
 
