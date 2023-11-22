@@ -1,4 +1,5 @@
-﻿using SalesDemo.Products;
+﻿using SalesDemo.Customers;
+using SalesDemo.Products;
 using Abp.Zero.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using SalesDemo.Authorization.Delegation;
@@ -20,6 +21,8 @@ namespace SalesDemo.EntityFrameworkCore
 {
     public class SalesDemoDbContext : AbpZeroDbContext<Tenant, Role, User, SalesDemoDbContext>, IOpenIddictDbContext
     {
+        public virtual DbSet<Customer> Customers { get; set; }
+
         public virtual DbSet<Product> Products { get; set; }
 
         /* Define an IDbSet for each entity of the application */
@@ -60,10 +63,14 @@ namespace SalesDemo.EntityFrameworkCore
         {
             base.OnModelCreating(modelBuilder);
 
-            modelBuilder.Entity<Product>(p =>
+            modelBuilder.Entity<Customer>(c =>
             {
-                p.HasIndex(e => new { e.TenantId });
+                c.HasIndex(e => new { e.TenantId });
             });
+            modelBuilder.Entity<Product>(p =>
+                       {
+                           p.HasIndex(e => new { e.TenantId });
+                       });
             modelBuilder.Entity<BinaryObject>(b =>
                        {
                            b.HasIndex(e => new { e.TenantId });

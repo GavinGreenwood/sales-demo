@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SalesDemo.EntityFrameworkCore;
 
@@ -11,9 +12,11 @@ using SalesDemo.EntityFrameworkCore;
 namespace SalesDemo.Migrations
 {
     [DbContext(typeof(SalesDemoDbContext))]
-    partial class SalesDemoDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231122192612_Add_Customers_Table")]
+    partial class Add_Customers_Table
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

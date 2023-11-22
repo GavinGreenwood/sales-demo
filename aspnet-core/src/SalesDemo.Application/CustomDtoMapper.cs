@@ -1,4 +1,6 @@
-﻿using SalesDemo.Products.Dtos;
+﻿using SalesDemo.Customers.Dtos;
+using SalesDemo.Customers;
+using SalesDemo.Products.Dtos;
 using SalesDemo.Products;
 using Abp.Application.Editions;
 using Abp.Application.Features;
@@ -51,6 +53,8 @@ namespace SalesDemo
     {
         public static void CreateMappings(IMapperConfigurationExpression configuration)
         {
+            configuration.CreateMap<CreateOrEditCustomerDto, Customer>().ReverseMap();
+            configuration.CreateMap<CustomerDto, Customer>().ReverseMap();
             configuration.CreateMap<CreateOrEditProductDto, Product>().ReverseMap();
             configuration.CreateMap<ProductDto, Product>().ReverseMap();
             //Inputs

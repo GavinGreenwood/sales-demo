@@ -1,6 +1,11 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <localizationDictionary culture="en">
-  <texts>
+  <texts>    <text name="Customers">Customers</text>
+    <text name="Customer">Customer</text>
+    <text name="CreateNewCustomer">Create new customer</text>
+    <text name="EditCustomer">Edit customer</text>
+    <text name="DeleteCustomer">Delete customer</text>
+
     <text name="HomePage">Home page</text>
     <text name="AboutUs">About us</text>
     <text name="Administration">Administration</text>
