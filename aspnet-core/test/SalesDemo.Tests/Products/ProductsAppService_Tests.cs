@@ -12,6 +12,7 @@ using Xunit;
 using Shouldly;
 using SalesDemo.Products.Dtos;
 using Abp.Runtime.Validation;
+using Abp.Application.Services.Dto;
 
 namespace SalesDemo.Tests.Products
 {
@@ -105,6 +106,34 @@ namespace SalesDemo.Tests.Products
                 product.Description.ShouldBe(input.Description);
                 product.Sku.ShouldBe(input.Sku);
 
+            }
+        }
+
+        public class Delete : ProductsAppService_Tests
+        {
+            public Delete()
+            {
+                UsingDbContext(context => context.Products.Add(new Product
+                {
+                    Name = "Test Product",
+                    Description = "Test Description",
+                    Sku = "12345678",
+                    Id = 1
+                }));
+            }
+
+            [Fact()]
+            public async Task GivenDelete_ShouldDeleteProduct()
+            {
+                var input = new EntityDto
+                {
+                    Id = 1
+                };
+
+                await _classUnderTest.Delete(input);
+
+                var product = UsingDbContext(context => context.Products.FirstOrDefault(p => p.Id == input.Id));
+                product.ShouldBeNull();
             }
         }
     }

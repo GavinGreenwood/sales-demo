@@ -10,5 +10,6 @@ namespace SalesDemo.Products
     public interface IProductsAppService : IApplicationService
     {
         Task CreateOrEdit(CreateOrEditProductDto input);
+        Task Delete(EntityDto input);
     }
 }

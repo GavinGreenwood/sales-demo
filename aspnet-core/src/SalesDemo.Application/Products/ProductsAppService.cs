@@ -54,5 +54,11 @@ namespace SalesDemo.Products
 
             await _productRepository.InsertAsync(product);
         }
+
+        [AbpAuthorize(AppPermissions.Pages_Products_Delete)]
+        public virtual async Task Delete(EntityDto input)
+        {
+            await _productRepository.DeleteAsync(input.Id);
+        }
     }
 }
