@@ -50,6 +50,25 @@ namespace SalesDemo.Tests.Products
 
             await Assert.ThrowsAsync<AbpValidationException>(() => _classUnderTest.CreateOrEdit(input));
         }
+
+        [Fact()]
+        public async Task GivenCreate_ShouldMapDtoToEntityAndCreateProduct()
+        {
+            var input = new CreateOrEditProductDto
+            {
+                Name = "Test Product",
+                Description = "Test Description",
+                Sku = "12345678",
+            };
+
+            await _classUnderTest.CreateOrEdit(input);
+
+            var product = UsingDbContext(context => context.Products.FirstOrDefault(p => p.Name == input.Name));
+            product.ShouldNotBeNull();
+            product.Name.ShouldBe(input.Name);
+            product.Description.ShouldBe(input.Description);
+            product.Sku.ShouldBe(input.Sku);
+        }
     }
 
 }
