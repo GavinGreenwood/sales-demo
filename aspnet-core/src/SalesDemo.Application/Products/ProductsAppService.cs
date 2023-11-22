@@ -36,7 +36,7 @@ namespace SalesDemo.Products
                 .OrderBy(input.Sorting ?? "id asc")
                 .PageBy(input);
 
-            var products = from o in productsFromDb
+            var products = from o in pagedProducts
                            select new
                             {
 
