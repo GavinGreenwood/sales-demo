@@ -183,6 +183,20 @@ namespace SalesDemo.Tests.Products
 
                 output.Items.Count.ShouldBe(3);
             }
+
+            [Fact()]
+            public async Task GivenGetAll_WhenPaged_ShouldReturnProductListAndUpdateCount()
+            {
+                var input = new GetAllProductsInput
+                {
+                    MaxResultCount = 2,
+                    SkipCount = 1
+                };
+
+                var output = await _classUnderTest.GetAll(input);
+
+                output.Items.Count.ShouldBe(2);
+            }
         }
     }
 

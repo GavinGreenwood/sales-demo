@@ -32,6 +32,10 @@ namespace SalesDemo.Products
         {
             var productsFromDb = _productRepository.GetAll();
 
+            var pagedProducts = productsFromDb
+                .OrderBy(input.Sorting ?? "id asc")
+                .PageBy(input);
+
             var products = from o in productsFromDb
                            select new
                             {
