@@ -36,8 +36,15 @@ namespace SalesDemo.Products
             }
             else
             {
-                //await Update(input);
+                await Update(input);
             }
+        }
+
+        [AbpAuthorize(AppPermissions.Pages_Products_Edit)]
+        protected virtual async Task Update(CreateOrEditProductDto input)
+        {
+            var product = await _productRepository.FirstOrDefaultAsync((int)input.Id);
+            ObjectMapper.Map(input, product);
         }
 
         [AbpAuthorize(AppPermissions.Pages_Products_Create)]

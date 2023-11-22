@@ -25,49 +25,87 @@ namespace SalesDemo.Tests.Products
             _classUnderTest = Resolve<IProductsAppService>();
         }
 
-        [Fact()]
-        public async Task GivenCreate_WhenNameIsTooShort_ShouldThrowUserFriendlyException()
+        public class Create : ProductsAppService_Tests
         {
-            var input = new CreateOrEditProductDto
-            {
-                Name = "Te",
-                Description = "Test Description",
-                Sku = "12345678",
-            };
 
-            await Assert.ThrowsAsync<AbpValidationException>(() => _classUnderTest.CreateOrEdit(input));
+            [Fact()]
+            public async Task GivenCreate_WhenNameIsTooShort_ShouldThrowUserFriendlyException()
+            {
+                var input = new CreateOrEditProductDto
+                {
+                    Name = "Te",
+                    Description = "Test Description",
+                    Sku = "12345678",
+                };
+
+                await Assert.ThrowsAsync<AbpValidationException>(() => _classUnderTest.CreateOrEdit(input));
+            }
+
+            [Fact()]
+            public async Task GivenCreate_WhenPruductSkuNot8Characters_ShouldThrowUserFriendlyException()
+            {
+                var input = new CreateOrEditProductDto
+                {
+                    Name = "Test Product",
+                    Description = "Test Description",
+                    Sku = "1234567",
+                };
+
+                await Assert.ThrowsAsync<AbpValidationException>(() => _classUnderTest.CreateOrEdit(input));
+            }
+
+            [Fact()]
+            public async Task GivenCreate_ShouldMapDtoToEntityAndCreateProduct()
+            {
+                var input = new CreateOrEditProductDto
+                {
+                    Name = "Test Product",
+                    Description = "Test Description",
+                    Sku = "12345678",
+                };
+
+                await _classUnderTest.CreateOrEdit(input);
+
+                var product = UsingDbContext(context => context.Products.FirstOrDefault(p => p.Name == input.Name));
+                product.ShouldNotBeNull();
+                product.Name.ShouldBe(input.Name);
+                product.Description.ShouldBe(input.Description);
+                product.Sku.ShouldBe(input.Sku);
+            }
         }
 
-        [Fact()]
-        public async Task GivenCreate_WhenPruductSkuNot8Characters_ShouldThrowUserFriendlyException()
+        public class Edit : ProductsAppService_Tests
         {
-            var input = new CreateOrEditProductDto
+            public Edit() { 
+                UsingDbContext(context => context.Products.Add(new Product
+                {
+                    Name = "Test Product",
+                    Description = "Test Description",
+                    Sku = "12345678",
+                    Id = 1
+                }));
+            }
+
+            [Fact()]
+            public async Task GivenEdit_ShouldMapDtoToEntityAndUpdateProduct()
             {
-                Name = "Test Product",
-                Description = "Test Description",
-                Sku = "1234567",
-            };
+                var input = new CreateOrEditProductDto
+                {
+                    Name = "new name",
+                    Description = "New Description",
+                    Sku = "77777777",
+                    Id = 1
+                };
 
-            await Assert.ThrowsAsync<AbpValidationException>(() => _classUnderTest.CreateOrEdit(input));
-        }
+                await _classUnderTest.CreateOrEdit(input);
 
-        [Fact()]
-        public async Task GivenCreate_ShouldMapDtoToEntityAndCreateProduct()
-        {
-            var input = new CreateOrEditProductDto
-            {
-                Name = "Test Product",
-                Description = "Test Description",
-                Sku = "12345678",
-            };
+                var product = UsingDbContext(context => context.Products.FirstOrDefault(p => p.Id == input.Id));
+                product.ShouldNotBeNull();
+                product.Name.ShouldBe(input.Name);
+                product.Description.ShouldBe(input.Description);
+                product.Sku.ShouldBe(input.Sku);
 
-            await _classUnderTest.CreateOrEdit(input);
-
-            var product = UsingDbContext(context => context.Products.FirstOrDefault(p => p.Name == input.Name));
-            product.ShouldNotBeNull();
-            product.Name.ShouldBe(input.Name);
-            product.Description.ShouldBe(input.Description);
-            product.Sku.ShouldBe(input.Sku);
+            }
         }
     }
 
