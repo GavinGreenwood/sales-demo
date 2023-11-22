@@ -37,6 +37,19 @@ namespace SalesDemo.Tests.Products
 
             await Assert.ThrowsAsync<AbpValidationException>(() => _classUnderTest.CreateOrEdit(input));
         }
+
+        [Fact()]
+        public async Task GivenCreate_WhenPruductSkuNot8Characters_ShouldThrowUserFriendlyException()
+        {
+            var input = new CreateOrEditProductDto
+            {
+                Name = "Test Product",
+                Description = "Test Description",
+                Sku = "1234567",
+            };
+
+            await Assert.ThrowsAsync<AbpValidationException>(() => _classUnderTest.CreateOrEdit(input));
+        }
     }
 
 }
