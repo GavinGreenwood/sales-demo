@@ -28,6 +28,16 @@ namespace SalesDemo.Products
 
         }
 
+        public virtual async Task<PagedResultDto<GetProductForViewDto>> GetAll(GetAllProductsInput input)
+        {
+            var totalCount = await _productRepository.GetAll().CountAsync();
+
+            return new PagedResultDto<GetProductForViewDto>(
+                totalCount,
+                null
+            );
+        }
+
         public virtual async Task<GetProductForViewDto> GetProductForView(int id)
         {
             var product = await _productRepository.GetAsync(id);

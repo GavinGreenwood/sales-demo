@@ -136,6 +136,44 @@ namespace SalesDemo.Tests.Products
                 product.ShouldBeNull();
             }
         }
+
+        public class GetAll : ProductsAppService_Tests
+        {
+            public GetAll()
+            {
+                UsingDbContext(context => context.Products.Add(new Product
+                {
+                    Name = "Test Product",
+                    Description = "Test Description",
+                    Sku = "12345678",
+                    Id = 1
+                }));
+                UsingDbContext(context => context.Products.Add(new Product
+                {
+                    Name = "Test Product 2",
+                    Description = "Test Description 2",
+                    Sku = "12345678",
+                    Id = 2
+                }));
+                UsingDbContext(context => context.Products.Add(new Product
+                {
+                    Name = "Test Product 3",
+                    Description = "Test Description 3",
+                    Sku = "12345678",
+                    Id = 3
+                }));
+            }
+
+            [Fact()]
+            public async Task GivenGetAll_ShouldReturnProductCount()
+            {
+                var input = new GetAllProductsInput();
+
+                var output = await _classUnderTest.GetAll(input);
+
+                output.TotalCount.ShouldBe(3);
+            }
+        }
     }
 
 }
