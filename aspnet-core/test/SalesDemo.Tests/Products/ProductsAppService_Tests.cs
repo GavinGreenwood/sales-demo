@@ -145,7 +145,7 @@ namespace SalesDemo.Tests.Products
                 {
                     Name = "Laptop",
                     Description = "Test Description",
-                    Sku = "12345678",
+                    Sku = "09876543",
                     Id = 1
                 }));
                 UsingDbContext(context => context.Products.Add(new Product
@@ -210,7 +210,21 @@ namespace SalesDemo.Tests.Products
 
                 output.Items.Count.ShouldBe(1);
                 output.TotalCount.ShouldBe(1);
-            }   
+            }
+
+            [Fact()]
+            public async Task GivenGetAll_WhenSkuFilter_ShouldReturnFiltedProductListWithCountUpdated()
+            {
+                var input = new GetAllProductsInput
+                {
+                    SkuFilter = "12345678"
+                };
+
+                var output = await _classUnderTest.GetAll(input);
+
+                output.Items.Count.ShouldBe(2);
+                output.TotalCount.ShouldBe(2);
+            }
         }
     }
 

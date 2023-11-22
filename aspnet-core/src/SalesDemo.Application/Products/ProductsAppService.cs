@@ -31,7 +31,8 @@ namespace SalesDemo.Products
         public virtual async Task<PagedResultDto<GetProductForViewDto>> GetAll(GetAllProductsInput input)
         {
             var filteredProducts = _productRepository.GetAll()
-                        .WhereIf(!string.IsNullOrWhiteSpace(input.NameFilter), e => e.Name.Contains(input.NameFilter));
+                        .WhereIf(!string.IsNullOrWhiteSpace(input.NameFilter), e => e.Name.Contains(input.NameFilter))
+                        .WhereIf(!string.IsNullOrWhiteSpace(input.SkuFilter), e => e.Sku.Contains(input.SkuFilter));
 
             var pagedAndFilteredProducts = filteredProducts
                 .OrderBy(input.Sorting ?? "id asc")
